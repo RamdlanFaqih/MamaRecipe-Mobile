@@ -69,13 +69,6 @@ Mama Recipe mobile app allows users to access the Mama Recipe platform on their 
   <summary>
     Detail Recipe
   </summary>
-<img src="screenshots/home.png" alt="Home Page" width="30%" />
-</details>
-
-<details>
-  <summary>
-    Detail Recipe
-  </summary>
 <img src="screenshots/detailRecipe.png" alt="Detail Recipe" width="30%" />
 </details>
 
