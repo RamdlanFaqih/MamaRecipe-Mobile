@@ -44,7 +44,54 @@ Mama Recipe mobile app allows users to access the Mama Recipe platform on their 
 
 ## Screenshots
 
-*Include screenshots of the mobile app here.*
+<details>
+  <summary>
+    Splash Screen
+  </summary>
+<img src="screenshots/splashScreen.png" alt="Splash Screen" />
+</details>
+
+<details>
+  <summary>
+    Login
+  </summary>
+<img src="screenshots/login.png" alt="Login" />
+</details>
+
+<details>
+  <summary>
+    Home
+  </summary>
+<img src="screenshots/home.png" alt="Home Page" />
+</details>
+
+<details>
+  <summary>
+    Detail Recipe
+  </summary>
+<img src="screenshots/home.png" alt="Home Page" />
+</details>
+
+<details>
+  <summary>
+    Detail Recipe
+  </summary>
+<img src="screenshots/home.png" alt="Detail Recipe" />
+</details>
+
+<details>
+  <summary>
+    Add Recipe
+  </summary>
+<img src="screenshots/addRecipe.png" alt="Add Recipe" />
+</details>
+
+<details>
+  <summary>
+    Profile
+  </summary>
+<img src="screenshots/profile.png" alt="Profile" />
+</details>
 
 ## Built With
 
