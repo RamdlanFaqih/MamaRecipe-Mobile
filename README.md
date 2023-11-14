@@ -48,7 +48,7 @@ Mama Recipe mobile app allows users to access the Mama Recipe platform on their 
   <summary>
     Splash Screen
   </summary>
-<img src="screenshots/splashScreen.png" alt="Splash Screen" />
+<img src="screenshots/splashScreen.png" alt="Splash Screen" width="50%" />
 </details>
 
 <details>
