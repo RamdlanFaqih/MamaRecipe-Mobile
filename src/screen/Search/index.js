@@ -14,14 +14,16 @@ import CardRecipe from '../../components/CardRecipe';
 function Search({navigation}) {
   const [data, setData] = React.useState('');
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [sortOption, setSortOption] = React.useState('ASC');
+
 
   const fetchRecipes = async (query, sortOption) => {
     try {
       const response = await axios.get(
         `${process.env.API_URL}/recipes?search=${query}&sort=${sortOption}`,
       );
-      setData(response.data.data.rows);
-      console.log('Fetched Data:', response.data.data.rows);
+      setData(response.data.result.result.rows);
+      console.log('Fetched Data:', response.data.result.result.rows);
     } catch (error) {
       console.log(error);
     }

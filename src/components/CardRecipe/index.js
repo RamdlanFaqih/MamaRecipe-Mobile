@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {View, StyleSheet, Image, Text} from 'react-native';
 
-const CardRecipe = ({uri, foodName, store, foodCategory, ...props}) => {
+const CardRecipe = ({uri, foodName, store, foodCategory, onDeletePress, ...props}) => {
   return (
     <View style={styles.container}>
       <Image

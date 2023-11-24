@@ -14,6 +14,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
+
 const EditProfile = ({navigation, route}) => {
   const { userId } = route.params;
   const [response, setResponse] = React.useState(null);

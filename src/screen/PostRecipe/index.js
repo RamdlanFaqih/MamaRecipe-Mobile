@@ -7,63 +7,127 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Image,
+  PermissionsAndroid,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Input} from '../../components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
 
 const PostRecipe = ({navigation}) => {
-  const [data, setData] = React.useState({
+  const [recipes, setRecipes] = React.useState({
+    image: '',
     food_name: '',
     ingredients: '',
-    video: '',
     video_title: '',
-    food_category: '',
+    video: '',
+    users_id: '',
   });
-  const [image, setImage] = React.useState(null);
+  const [response, setResponse] = React.useState(null);
+  React.useEffect(() => {
+    AsyncStorage.getItem('users_id').then(value => {
+      setRecipes({...recipes, users_id: value});
+    });
+  }, []);
 
-  const chooseImageFromGallery = () => {
-    ImagePicker.launchImageLibrary({mediaType: 'photo'}, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        setImage(response);
-      }
+  const handleChange = (field, text) => {
+    setRecipes({
+      ...recipes,
+      [field]: text,
     });
   };
+  console.log(recipes);
+  const requestPermissions = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'App Camera Permissions',
+          message: 'App need Camera',
+          buttonPositive: 'OK',
+          buttonNegative: 'Cancel',
+          buttonNeutral: 'Ask Me Later',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('access successfully granted');
+        cameraLaunch();
+      } else {
+        console.log('access failure');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const handlePostRecipe = () => {
+  const cameraLaunch = () => {
+    ImagePicker.launchCamera(
+      {
+        saveToPhotos: true,
+        mediaType: 'mixed',
+        includeBase64: false,
+      },
+      res => {
+        console.log('response camera = ', res);
+        if (res.didCancel) {
+          console.log('user cancel image');
+        } else if (res.errorMessage) {
+          console.log('Image Picker Error');
+        } else {
+          const data = res.assets[0];
+          console.log(data);
+          setResponse(data);
+        }
+      },
+    );
+  };
+  const galleryLaunch = () => {
+    ImagePicker.launchImageLibrary(
+      {
+        saveToPhotos: true,
+        mediaType: 'mixed',
+        includeBase64: false,
+      },
+      res => {
+        console.log('response library = ', res);
+        if (res.didCancel) {
+          console.log('user cancel library');
+        } else if (res.errorMessage) {
+          console.log('Image Picker Error');
+        } else {
+          const data = res.assets[0];
+          console.log(data);
+          setResponse(data);
+        }
+      },
+    );
+  };
+
+  const handleSumbit = () => {
     const formData = new FormData();
-    formData.append('food_name', data.food_name);
-    formData.append('ingredients', data.ingredients);
-    if (image) {
+
+    formData.append('food_name', recipes.food_name);
+    formData.append('ingredients', recipes.ingredients);
+    formData.append('video_title', recipes.video_title);
+    formData.append('video', recipes.video);
+    formData.append('users_id', recipes.users_id);
+
+    if (response && response.uri) {
       formData.append('image', {
-        uri: image.uri,
-        type: image.type,
-        name: image.fileName,
+        uri: response?.uri ?? '',
+        type: response?.type ?? '',
+        name: response?.fileName ?? '',
+        fileSize: response?.fileSize ?? '',
       });
     }
-    formData.append('video_title', data.video_title);
-    formData.append('video', data.video);
-    formData.append('food_category', data.food_category);
-    formData.append('users_id', data.users_id);
-
     axios
-    .post(`${process.env.API_URL}/food/addrecipes`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    .post(`${process.env.API_URL}/recipes/tambahproduct`, formData)
+    .then(res => {
+      console.log(res);
     })
-    .then(response => {
-      console.log('Status Code:', response.status);
-      console.log('Server Response:', response.data);
-    })
-    .catch(error => {
-      console.log('Error:', error);
+    .catch(err => {
+      console.log(err.response);
     });
   };
 
@@ -73,42 +137,42 @@ const PostRecipe = ({navigation}) => {
         <View style={styles.title}>
           <Text style={styles.titleText}>Add Your Recipe</Text>
         </View>
-        <Input
-          placeholder="Title"
-          iconName="book-open-page-variant-outline"
-          onChangeText={text => setData({...data, food_name: text})}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Food Category"
-          onChangeText={text => setData({...data, food_category: text})}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Ingredients"
-          onChangeText={text => setData({...data, ingredients: text})}
-        />
-        <TouchableOpacity
-          style={styles.imagePickerButton}
-          onPress={chooseImageFromGallery}>
-          <Text style={styles.buttonText}>Pick Image from Gallery</Text>
-        </TouchableOpacity>
-        {image && image.uri && (
-          <Image source={{uri: image.uri}} style={styles.previewImage} />
-        )}
-        <TextInput
-          style={styles.textArea}
-          placeholder="Video Title"
-          onChangeText={text => setData({...data, video_title: text})}
-        />
-        <Input
-          placeholder="Add Video URL"
-          iconName="video-outline"
-          onChangeText={text => setData({...data, video: text})}
-        />
-        <TouchableOpacity style={styles.button} onPress={handlePostRecipe}>
-          <Text style={styles.buttonText}>Post</Text>
-        </TouchableOpacity>
+        <View>
+          <Input
+            placeholder="Title"
+            iconName="book-open-page-variant-outline"
+            value={recipes.food_name}
+            onChangeText={text => handleChange('food_name', text)}
+          />
+          <TextInput
+            style={styles.textArea}
+            placeholder="Ingredients"
+            value={recipes.ingredients}
+            onChangeText={text => handleChange('ingredients', text)}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              galleryLaunch();
+            }}
+            style={styles.imagePickerButton}>
+            <Text style={styles.buttonText}>Pick Image from Gallery</Text>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Video Title"
+            value={recipes.video_title}
+            onChangeText={text => handleChange('video_title', text)}
+          />
+          <Input
+            placeholder="Add Video URL"
+            iconName="video-outline"
+            value={recipes.video}
+            onChangeText={text => handleChange('video', text)}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleSumbit}>
+            <Text style={styles.buttonText}>Post</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

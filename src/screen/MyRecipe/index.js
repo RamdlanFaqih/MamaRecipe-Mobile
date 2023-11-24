@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CardRecipe from '../../components/CardRecipe';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LikeSave} from '../../components';
 
 const MyRecipe = ({navigation}) => {
   const [user, setUser] = React.useState('');
@@ -61,6 +62,11 @@ const MyRecipe = ({navigation}) => {
               store={user.user_name}
               foodCategory="Spicy"
             />
+            <TouchableOpacity style={styles.deleteButtonContainer}>
+              <View style={styles.deleteButton}>
+                <MaterialCommunityIcons name="delete" size={24} color="red" />
+              </View>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -86,8 +92,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   content: {
-    padding: 24,
+    flex: 2,
+    paddingLeft: 24,
+    paddingRight: 24,
     paddingTop: 35,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  deleteButtonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deleteButton: {
+    borderWidth: 1,
+    borderColor: 'red',
+    padding: 8,
+    borderRadius: 5,
   },
 });
 

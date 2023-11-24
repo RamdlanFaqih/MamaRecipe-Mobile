@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  RefreshControl
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Input} from '../../components';
@@ -22,8 +23,8 @@ function HomeScreen({navigation}) {
     axios
       .get(`${process.env.API_URL}/recipes`)
       .then(response => {
-        setData(response.data.data.rows);
-        console.log(response.data.data.rows);
+        setData(response.data.result.result.rows);
+        console.log(response.data.result.result.rows);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -37,7 +38,11 @@ function HomeScreen({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Input placeholder="Search Pasta, Bread, etc" iconName="magnify" onPressIn={handleSearch} />
+        <Input
+          placeholder="Search Pasta, Bread, etc"
+          iconName="magnify"
+          onPressIn={handleSearch}
+        />
         <View style={styles.newRecipe}>
           <Text style={styles.sectionText}>New Recipes</Text>
           <ScrollView style={styles.content}>
@@ -46,7 +51,11 @@ function HomeScreen({navigation}) {
               data={data}
               keyExtractor={item => item.recipes_id}
               renderItem={({item}) => (
-                <CardImage uri={item.image} text={item.food_name} />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('DetailRecipe', {recipes_id: item.recipes_id})}
+                  >
+                  <CardImage uri={item.image} text={item.food_name} />
+                </TouchableOpacity>
               )}
             />
           </ScrollView>

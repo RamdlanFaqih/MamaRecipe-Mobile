@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import * as React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, RefreshControl} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -39,6 +39,10 @@ const Profile = ({navigation}) => {
   }, []);
   return (
     <View style={styles.container}>
+      <ScrollView 
+       style={styles.container}
+       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+       >
       <View style={styles.profile}>
         {user.image ? (
           <Image
@@ -56,6 +60,7 @@ const Profile = ({navigation}) => {
 
         <Text style={styles.name}>{user.name}</Text>
       </View>
+      </ScrollView>
       <View style={styles.content}>
         <View style={styles.option}>
           <TouchableOpacity
