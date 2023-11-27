@@ -24,7 +24,6 @@ function HomeScreen({navigation}) {
       .get(`${process.env.API_URL}/recipes`)
       .then(response => {
         setData(response.data.result.result.rows);
-        console.log(response.data.result.result.rows);
       })
       .catch(error => {
         console.error('Error fetching data:', error);

@@ -6,11 +6,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CardRecipe from '../../components/CardRecipe';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LikeSave} from '../../components';
 
 const MyRecipe = ({navigation}) => {
   const [user, setUser] = React.useState('');
-  const [recipesId, setRecipesId] = React.useState(null);
   const [recipes, setRecipes] = React.useState([]);
 
   React.useEffect(() => {
@@ -38,6 +36,27 @@ const MyRecipe = ({navigation}) => {
   React.useEffect(() => {
     AsyncStorage.setItem('userRecipes', JSON.stringify(recipes));
   }, [recipes]);
+
+  const handleDelete = async (recipeId) => {
+    try {
+      console.log('Deleting recipe with ID:', recipeId);
+
+      const response = await axios.delete(
+        `${process.env.API_URL}/recipes/hapusproduct/${recipeId}`
+      );
+
+      console.log('Delete response:', response);
+
+      const updatedRecipe = recipes.filter(
+        (item) => item.recipes_id !== recipeId
+      );
+      setRecipes(updatedRecipe);
+      console.log('Recipe deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete recipe', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -62,7 +81,10 @@ const MyRecipe = ({navigation}) => {
               store={user.user_name}
               foodCategory="Spicy"
             />
-            <TouchableOpacity style={styles.deleteButtonContainer}>
+            <TouchableOpacity
+              style={styles.deleteButtonContainer}
+              onPress={() => handleDelete(item.recipes_id)}
+                >
               <View style={styles.deleteButton}>
                 <MaterialCommunityIcons name="delete" size={24} color="red" />
               </View>

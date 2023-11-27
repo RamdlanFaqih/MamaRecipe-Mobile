@@ -7,13 +7,16 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Ingredients from '../DetailIngredients';
 import VideoStep from '../VideoStep';
+import {LikeSave} from '../../components';
 
 const Tab = createMaterialTopTabNavigator();
 
 const DetailRecipe = ({navigation, route}) => {
   const {recipes_id} = route.params;
   const [recipes, setRecipes] = React.useState('');
-  const users_id = AsyncStorage.getItem('users_id');
+  const [usersId, setUsersId] = React.useState('');
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [isSaved, setIsSaved] = React.useState(false);
 
   React.useEffect(() => {
     const fetchRecipe = async () => {
@@ -30,7 +33,78 @@ const DetailRecipe = ({navigation, route}) => {
     fetchRecipe();
   }, [recipes_id]);
 
+  React.useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const userIdValue = await AsyncStorage.getItem('users_id');
+        console.log(userIdValue);
+        if (userIdValue !== null) {
+          setUsersId(userIdValue);
+        }
+      } catch (error) {
+        console.log('Error retrieving users_id:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   console.log('recipes_id :', recipes_id);
+  const handleClickSave = async () => {
+    try {
+      if (isSaved) {
+        const response = await axios.delete(
+          `${process.env.API_URL}/saved/unsaved/${usersId}`,
+          {
+            data: {
+              recipes_id: recipes_id,
+            },
+          }
+        );
+        console.log('Unsaved Recipe', response);
+      } else {
+        const response = await axios.post(
+          `${process.env.API_URL}/saved/insert/${usersId}`,
+          {
+            recipes_id: recipes_id,
+          }
+        );
+        console.log('Saved Recipe', response);
+      }
+
+      setIsSaved(!isSaved);
+    } catch (error) {
+      console.log(('Error Saving/Unsaving Recipe', error));
+    }
+  };
+  const handleClickLike = async () => {
+    try {
+      if (isLiked) {
+        const response = await axios.delete(
+          `${process.env.API_URL}/liked/unlike/${usersId}`,
+          {
+            data: {
+              recipes_id: recipes_id,
+            },
+          }
+        );
+        console.log('unliked recipe', response);
+      } else {
+        const response = await axios.post(
+          `${process.env.API_URL}/liked/insert/${usersId}`,
+          {
+            recipes_id: recipes_id,
+          }
+        );
+        console.log('Liked Recipe', response);
+      }
+      
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.log('Error Like / Unlike Recipe', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.product}>
@@ -41,8 +115,18 @@ const DetailRecipe = ({navigation, route}) => {
           style={styles.backgroundImage}
         />
         <View style={styles.overlay}>
-          <Text style={styles.foodName}>{recipes.food_name}</Text>
-          <Text style={styles.author}>By Chef Round Homson</Text>
+          <View style={styles.foodDetail}>
+            <Text style={styles.foodName}>{recipes.food_name}</Text>
+            <Text style={styles.author}>By Chef Round Homson</Text>
+          </View>
+          <View style={styles.likeSave}>
+            <LikeSave 
+              isSaved={isSaved}
+              isLiked={isLiked}
+              onPressLiked={handleClickLike}
+              onPressSaved={handleClickSave}
+              />
+          </View>
         </View>
       </View>
       <View style={styles.cardContainer}>
@@ -91,7 +175,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 133,
     left: 28,
-    width: 149,
+    right: 28,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  likeSave: {
+    paddingTop: 50,
+  },
+  foodDetail : {
+    width: 200,
   },
   foodName: {
     color: 'white',

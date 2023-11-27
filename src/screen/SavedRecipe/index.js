@@ -1,11 +1,30 @@
 /* eslint-disable prettier/prettier */
 
 import * as React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CardRecipe from '../../components/CardRecipe';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const SavedRecipe = ({navigation}) => {
+  const [savedRecipe, setSavedRecipe] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchSavedRecipes = async () => {
+      try {
+        const users_id = await AsyncStorage.getItem('users_id');
+        const response = await axios.get(
+          `${process.env.API_URL}/saved/users/${users_id}`,
+        );
+        setSavedRecipe(response.data.message.rows);
+        console.log('saved recipe', response.data.message.rows);
+      } catch (error) {
+        console.log('failed to fetchSavedRecipes', error);
+      }
+    };
+    fetchSavedRecipes();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -18,14 +37,20 @@ const SavedRecipe = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.title}>Saved Recipe</Text>
       </View>
-      <View style={styles.content}>
-        <CardRecipe
-          uri="https://res.cloudinary.com/dlveexbli/image/upload/v1695370265/hluqc0yxgmibijqpjovx.png"
-          foodName="Margherita"
-          store="In Veg Pizza"
-          foodCategory="Spicy"
+      <FlatList 
+        data={savedRecipe}
+        keyExtractor={item => item.recipes_id}
+        renderItem={({item}) => (
+          <View style={styles.content}>
+          <CardRecipe
+            uri={item.recipe_image}
+            foodName={item.food_name}
+            store={item.user_name}
+            foodCategory="Spicy"
+          />
+        </View>
+        )}
         />
-      </View>
     </View>
   );
 };

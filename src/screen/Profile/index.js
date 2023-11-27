@@ -39,7 +39,7 @@ const Profile = ({navigation}) => {
   }, []);
   return (
     <View style={styles.container}>
-      <ScrollView 
+      <ScrollView
        style={styles.container}
        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
        >
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     height: 84,
     borderRadius: 84,
   },
-  profile: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  profile: {flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 60},
   image: {width: 84, height: 84, borderRadius: 84},
   name: {color: '#fff', fontSize: 16, fontWeight: '700', marginTop: 20},
   content: {flex: 2, alignItems: 'center'},
