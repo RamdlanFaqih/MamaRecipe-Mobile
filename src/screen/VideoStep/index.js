@@ -6,23 +6,24 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   ScrollView,
 } from 'react-native';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
-const VideoStep = ({navigation}) => {
+const VideoStep = ({navigation, recipeVideo}) => {
+  const {title, description, recipes_id} = recipeVideo;
+  console.log(recipeVideo);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.videoCard}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('DetailRecipeVideo')}
+          onPress={() => navigation.navigate('DetailRecipeVideo', {recipes_id})}
           style={styles.iconPlay}>
           <FeatherIcons name="play" size={26} color="white" />
         </TouchableOpacity>
         <View style={styles.videoDetail}>
-          <Text style={styles.step}>Step 1</Text>
-          <Text style={styles.stepDetail}>Boil eggs for 3 minutes</Text>
+          <Text style={styles.step}>{description}</Text>
+          <Text style={styles.stepDetail}>{title}</Text>
         </View>
       </View>
     </ScrollView>

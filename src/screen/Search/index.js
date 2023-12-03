@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import {Input} from '../../components';
 import axios from 'axios';
@@ -51,14 +52,15 @@ function Search({navigation}) {
           keyExtractor={item => item.recipes_id}
           renderItem={({item}) => (
             <View style={styles.content}>
+              <TouchableOpacity onPress={() => navigation.navigate('DetailRecipe', {recipes_id : item.recipes_id})}>
               <CardRecipe
                 uri={item.image}
                 foodName={item.food_name}
-                store="In Veg Pizza"
-                foodCategory="Spicy"
+                store="Senja Restaurant"
                 onChangeText={text => setSearchQuery(text)}
                 onSubmitEditing={handleSearch}
               />
+              </TouchableOpacity>
             </View>
           )}
         />

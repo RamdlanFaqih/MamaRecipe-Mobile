@@ -43,12 +43,13 @@ const LikedRecipe = ({navigation}) => {
         keyExtractor={item => item.recipes_id}
         renderItem={({item}) => (
           <View style={styles.content}>
+            <TouchableOpacity onPress={() => navigation.navigate('DetailRecipe', {recipes_id : item.recipes_id})}>
             <CardRecipe
               uri={item.recipe_image}
               foodName={item.food_name}
               store={item.user_name}
-              foodCategory="Spicy"
             />
+            </TouchableOpacity>
           </View>
         )}
       />

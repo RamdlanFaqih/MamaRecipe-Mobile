@@ -37,20 +37,22 @@ const SavedRecipe = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.title}>Saved Recipe</Text>
       </View>
-      <FlatList 
+      <FlatList
         data={savedRecipe}
         keyExtractor={item => item.recipes_id}
         renderItem={({item}) => (
           <View style={styles.content}>
-          <CardRecipe
-            uri={item.recipe_image}
-            foodName={item.food_name}
-            store={item.user_name}
-            foodCategory="Spicy"
-          />
-        </View>
+            <TouchableOpacity onPress={() => navigation.navigate('DetailRecipe', {recipes_id : item.recipes_id})}>
+              <CardRecipe
+                uri={item.recipe_image}
+                foodName={item.food_name}
+                store={item.user_name}
+                // foodCategory="Spicy"
+              />
+            </TouchableOpacity>
+          </View>
         )}
-        />
+      />
     </View>
   );
 };
@@ -72,10 +74,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
- content: {
-  padding: 24,
-  paddingTop: 35,
- },
+  content: {
+    padding: 24,
+    paddingTop: 35,
+  },
 });
 
 export default SavedRecipe;

@@ -76,14 +76,6 @@ android {
 
     namespace "com.mamarecipe"
 
-    splits {
-        abi {
-            reset()
-            enable true
-            universalApk false
-            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-        }
-    }
     defaultConfig {
         applicationId "com.mamarecipe"
         minSdkVersion rootProject.ext.minSdkVersion

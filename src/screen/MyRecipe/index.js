@@ -75,12 +75,14 @@ const MyRecipe = ({navigation}) => {
         keyExtractor={item => item.recipes_id}
         renderItem={({item}) => (
           <View style={styles.content}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('DetailRecipe', {recipes_id: item.recipes_id})}>
             <CardRecipe
               uri={item.image}
               foodName={item.food_name}
               store={user.user_name}
-              foodCategory="Spicy"
             />
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.deleteButtonContainer}
               onPress={() => handleDelete(item.recipes_id)}

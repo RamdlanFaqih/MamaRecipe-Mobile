@@ -102,7 +102,7 @@ const Register = ({navigation}) => {
 const style = StyleSheet.create({
   backgroundColor: '#F5F5F5',
 
-  container: {flex: 1, padding: 25},
+  container: {marginTop: 50, flex: 1, padding: 25},
   register: {alignItems: 'center'},
   title: {color: '#EFC81A', fontSize: 24, fontWeight: 'bold'},
   description: {color: '#C4C4C4', fontSize: 12},

@@ -98,7 +98,6 @@ const DetailRecipe = ({navigation, route}) => {
         );
         console.log('Liked Recipe', response);
       }
-      
       setIsLiked(!isLiked);
     } catch (error) {
       console.log('Error Like / Unlike Recipe', error);
@@ -120,7 +119,7 @@ const DetailRecipe = ({navigation, route}) => {
             <Text style={styles.author}>By Chef Round Homson</Text>
           </View>
           <View style={styles.likeSave}>
-            <LikeSave 
+            <LikeSave
               isSaved={isSaved}
               isLiked={isLiked}
               onPressLiked={handleClickLike}
@@ -151,7 +150,15 @@ const DetailRecipe = ({navigation, route}) => {
                 <Ingredients ingredients={recipes.ingredients} />
               )}
             />
-            <Tab.Screen name="VideoStep" component={VideoStep} />
+            <Tab.Screen name="VideoStep" component={() => (
+              <VideoStep
+                navigation={navigation}
+                recipeVideo={{
+                  title: recipes.video_title,
+                  description: recipes.food_name,
+                  recipes_id: recipes_id
+                }} />
+            )} />
           </Tab.Navigator>
         </View>
       </View>
