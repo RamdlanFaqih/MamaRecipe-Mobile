@@ -67,9 +67,23 @@ Mama Recipe mobile app allows users to access the Mama Recipe platform on their 
 
 <details>
   <summary>
+    Search
+  </summary>
+<img src="screenshots/search.png" alt="Home Page" width="30%" />
+</details>
+
+<details>
+  <summary>
     Detail Recipe
   </summary>
 <img src="screenshots/detailRecipe.png" alt="Detail Recipe" width="30%" />
+</details>
+
+<details>
+  <summary>
+    Detail Video
+  </summary>
+<img src="screenshots/detailVideo.png" alt="Detail Recipe" width="30%" />
 </details>
 
 <details>
@@ -84,6 +98,35 @@ Mama Recipe mobile app allows users to access the Mama Recipe platform on their 
     Profile
   </summary>
 <img src="screenshots/profile.png" alt="Profile" width="30%" />
+</details>
+
+<details>
+  <summary>
+    Edit Profile
+  </summary>
+<img src="screenshots/editProfile.png" alt="Profile" width="30%" />
+</details>
+
+<details>
+  <summary>
+    My Recipe
+  </summary>
+<img src="screenshots/myRecipe.png" alt="Profile" width="30%" />
+</details>
+
+
+<details>
+  <summary>
+    Liked Recipe
+  </summary>
+<img src="screenshots/likedRecipe.png" alt="Profile" width="30%" />
+</details>
+
+<details>
+  <summary>
+    Saved Recipe
+  </summary>
+<img src="screenshots/savedRecipe.png" alt="Profile" width="30%" />
 </details>
 
 ## Built With

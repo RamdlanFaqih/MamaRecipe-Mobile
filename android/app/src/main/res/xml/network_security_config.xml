@@ -1,6 +1,6 @@
-<!-- res/xml/network_security_config.xml
+<!-- res/xml/network_security_config.xml -->
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">cloudinary.com</domain>
     </domain-config>
-</network-security-config> -->
+</network-security-config>
